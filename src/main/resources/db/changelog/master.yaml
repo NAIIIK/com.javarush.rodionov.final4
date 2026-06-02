@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/structural/01_create_base_tables.yaml
+  - include:
+      file: db/changelog/structural/02_import_raw_data.yaml
+  - include:
+      file: db/changelog/structural/03_convert_data.yaml
+  - include:
+      file: db/changelog/structural/04_apply_constraints.yaml

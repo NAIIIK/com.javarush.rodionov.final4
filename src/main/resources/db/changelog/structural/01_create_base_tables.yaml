@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-base-tables
+      author: nikita-rodionov
+      changes:
+        - sql:
+            sql: "CREATE SCHEMA IF NOT EXISTS world;"
+        - sql:
+            sql: >
+              DROP TABLE IF EXISTS "country_language" CASCADE;
+              DROP TABLE IF EXISTS "city" CASCADE;
+              DROP TABLE IF EXISTS "country" CASCADE;
+
+              CREATE TABLE "country" (
+                  "id" SERIAL NOT NULL,
+                  "code" char(3) NOT NULL DEFAULT '',
+                  "code_2" char(2) NOT NULL DEFAULT '',
+                  "name" varchar(52) NOT NULL DEFAULT '',
+                  "continent_raw" varchar(50) NOT NULL DEFAULT 'Asia',
+                  "continent" integer NOT NULL DEFAULT 0,
+                  "region" varchar(26) NOT NULL DEFAULT '',
+                  "surface_area" decimal(10,2) NOT NULL DEFAULT '0.00',
+                  "indep_year" smallint,
+                  "population" integer NOT NULL DEFAULT 0,
+                  "life_expectancy" decimal(3,1),
+                  "gnp" decimal(10,2),
+                  "gnpo_id" decimal(10,2),
+                  "local_name" varchar(45) NOT NULL DEFAULT '',
+                  "government_form" varchar(45) NOT NULL DEFAULT '',
+                  "head_of_state" varchar(60),
+                  "capital_id" integer,
+                  CONSTRAINT "country_pkey" PRIMARY KEY ("id")
+              );
+
+              CREATE TABLE "city" (
+                  "id" SERIAL NOT NULL,
+                  "country_id" integer NOT NULL,
+                  "name" varchar(35) NOT NULL DEFAULT '',
+                  "district" varchar(20) NOT NULL DEFAULT '',
+                  "population" integer NOT NULL DEFAULT 0,
+                  CONSTRAINT "city_pkey" PRIMARY KEY ("id")
+              );
+
+              CREATE TABLE "country_language" (
+                  "id" SERIAL NOT NULL,
+                  "country_id" integer NOT NULL,
+                  "language" varchar(30) NOT NULL DEFAULT '',
+                  "is_official" boolean NOT NULL DEFAULT FALSE,
+                  "percentage" decimal(4,1) NOT NULL DEFAULT '0.0',
+                  CONSTRAINT "country_language_pkey" PRIMARY KEY ("id")
+              );

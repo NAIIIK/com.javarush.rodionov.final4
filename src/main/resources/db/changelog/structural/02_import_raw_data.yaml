@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-import-raw-data
+      author: nikita-rodionov
+      changes:
+        - sqlFile:
+            path: "db/sql/import_countries.sql"
+            stripComments: true
+            endDelimiter: ";"
+        - sqlFile:
+            path: "db/sql/import_cities.sql"
+            stripComments: true
+            endDelimiter: ";"
+        - sqlFile:
+            path: "db/sql/import_country_languages.sql"
+            stripComments: true
+            endDelimiter: ";"

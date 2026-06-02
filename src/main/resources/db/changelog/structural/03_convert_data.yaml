@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-convert-continents-and-cleanup
+      author: nikita-rodionov
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: >
+              CREATE OR REPLACE FUNCTION convert_mixed_continent(val varchar) 
+              RETURNS integer AS $$
+              DECLARE
+                  continents varchar(50)[] := ARRAY['Asia', 'Europe', 'North America', 'Africa', 'Oceania', 'Antarctica', 'South America'];
+                  i integer;
+              BEGIN
+                  IF val IS NULL OR val = '' THEN
+                      RETURN 0;
+
+                  ELSIF val ~ '^[0-9]+$' THEN
+                      IF val::integer < 0 OR val::integer > 6 THEN
+                          RETURN 0;
+                      ELSE
+                          RETURN val::integer;
+                      END IF;
+
+                  ELSE
+                      FOR i IN 1..7 LOOP
+                          IF continents[i] = val THEN
+                              RETURN i - 1;
+                          END IF;
+                      END LOOP;
+                      RETURN 0;
+                  END IF;
+              END;
+              $$ LANGUAGE plpgsql IMMUTABLE;
+
+              UPDATE "world"."country" SET "continent" = convert_mixed_continent("continent_raw");
+              
+              ALTER TABLE "world"."country" DROP COLUMN "continent_raw";
+              
+              DROP FUNCTION IF EXISTS convert_mixed_continent(varchar);

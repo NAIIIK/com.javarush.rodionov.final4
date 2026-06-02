@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4-apply-constraints-and-indexes
+      author: nikita-rodionov
+      changes:
+        - sql:
+            sql: >
+              CREATE INDEX "city_ibfk_1_idx" ON "city" ("country_id");
+              CREATE INDEX "country_language_ibfk_1_idx" ON "country_language" ("country_id");
+
+              ALTER TABLE "city" 
+              ADD CONSTRAINT "city_ibfk_1" 
+              FOREIGN KEY ("country_id") REFERENCES "country" ("id") 
+              ON DELETE CASCADE ON UPDATE CASCADE;
+
+              ALTER TABLE "country_language" 
+              ADD CONSTRAINT "country_language_ibfk_1" 
+              FOREIGN KEY ("country_id") REFERENCES "country" ("id") 
+              ON DELETE CASCADE ON UPDATE CASCADE;
