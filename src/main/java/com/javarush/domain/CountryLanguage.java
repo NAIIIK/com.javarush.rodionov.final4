@@ -30,8 +30,7 @@ public class CountryLanguage {
     @Column(name = "language", length = 30, nullable = false)
     private String language;
 
-    @Column(name = "is_official", columnDefinition = "BIT", nullable = false)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Column(name = "is_official", nullable = false)
     private Boolean isOfficial;
 
     @Column(name = "percentage", nullable = false)
