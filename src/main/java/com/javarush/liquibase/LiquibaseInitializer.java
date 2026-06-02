@@ -10,7 +10,10 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class LiquibaseInitializer {
+public final class LiquibaseInitializer {
+
+    private LiquibaseInitializer() {}
+
     public static void runMigrations() {
         String url = Util.DB_URL;
         String user = Util.DB_USER;
@@ -18,8 +21,6 @@ public class LiquibaseInitializer {
         String changeLogPath = Util.CHANGE_LOG_PATH;
 
         try {
-            Class.forName(Util.DB_DRIVER);
-
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
                 Database database = DatabaseFactory.getInstance()
                         .findCorrectDatabaseImplementation(new JdbcConnection(connection));
@@ -38,8 +39,6 @@ public class LiquibaseInitializer {
 
                 System.out.println("Миграции Liquibase успешно применены");
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Драйвер PostgreSQL не найден.", e);
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при выполнении миграций Liquibase.", e);
         }

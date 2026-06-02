@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.javarush.rodionov.hibernate</groupId>
-  <artifactId>com.javarush.rodionov.hibernate</artifactId>
+  <groupId>com.javarush.rodionov.final4</groupId>
+  <artifactId>com.javarush.rodionov.final4</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -74,10 +74,19 @@
                     <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                       <mainClass>Main</mainClass>
                     </transformer>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                   </transformers>
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>9</source>
+              <target>9</target>
+            </configuration>
           </plugin>
         </plugins>
     </build>

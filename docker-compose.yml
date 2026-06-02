@@ -3,9 +3,9 @@ services:
     image: postgres:15-alpine
     container_name: final4-postgres
     environment:
-      POSTGRES_DB: world
-      POSTGRES_USER:
-      POSTGRES_PASSWORD:
+      POSTGRES_DB: final4
+      POSTGRES_USER: nikita
+      POSTGRES_PASSWORD: nikita
     ports:
       - "5432:5432"
     entrypoint: ["sh", "-c", "echo 'CREATE SCHEMA IF NOT EXISTS world;' > /docker-entrypoint-initdb.d/init.sql && exec docker-entrypoint.sh postgres"]
@@ -25,10 +25,11 @@ services:
       - postgres
       - redis
     environment:
+      - DB_NAME=final4
       - DB_HOST=postgres
-      - DB_USER=
-      - DB_PASSWORD=
-      - REDIS_HOST=redis
       - DB_PORT=5432
+      - DB_USER=nikita
+      - DB_PASSWORD=nikita
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
     restart: on-failure

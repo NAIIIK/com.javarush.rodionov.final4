@@ -38,13 +38,13 @@ public class Main {
                 benchmarkService.testPostgresPerformance(ids);
                 long stopPostgres = System.currentTimeMillis();
 
-                System.out.printf("%s:\t%d ms\n", "Redis",  (stopRedis - startRedis));
-                System.out.printf("%s:\t%d ms\n", "PostgreSQL",  (stopPostgres - startPostgres));
+                System.out.printf("%s:\t%d ms%n", "Redis",  (stopRedis - startRedis));
+                System.out.printf("%s:\t%d ms%n", "PostgreSQL",  (stopPostgres - startPostgres));
 
                 Thread.sleep(5_000);
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             if (sessionFactory != null) sessionFactory.close();
             redisClient.shutdown();

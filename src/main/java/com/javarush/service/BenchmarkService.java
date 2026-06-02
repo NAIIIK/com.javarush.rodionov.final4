@@ -38,7 +38,7 @@ public class BenchmarkService {
                 try {
                     objectMapper.readValue(value, CityCountry.class);
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException("Ошибка: Не удалось подключиться к Redis! Проверьте, запущен ли контейнер.", e);
+                    throw new RuntimeException("Ошибка: Не удалось подключиться к Redis.", e);
                 }
             }
         }
