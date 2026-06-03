@@ -15,30 +15,21 @@ public final class LiquibaseInitializer {
     private LiquibaseInitializer() {}
 
     public static void runMigrations() {
-        String url = Util.DB_URL;
-        String user = Util.DB_USER;
-        String password = Util.DB_PASSWORD;
-        String changeLogPath = Util.CHANGE_LOG_PATH;
+        try (Connection connection = DriverManager.getConnection(Util.DB_URL, Util.DB_USER, Util.DB_PASSWORD)) {
 
-        try {
-            try (Connection connection = DriverManager.getConnection(url, user, password)) {
-                Database database = DatabaseFactory.getInstance()
-                        .findCorrectDatabaseImplementation(new JdbcConnection(connection));
-                database.setDefaultSchemaName(Util.DEFAULT_SCHEMA_NAME);
+            Database database = DatabaseFactory.getInstance()
+                    .findCorrectDatabaseImplementation(new JdbcConnection(connection));
 
-                System.out.println("Запуск миграций Liquibase...");
+            database.setDefaultSchemaName(Util.DEFAULT_SCHEMA_NAME);
 
-                CommandScope updateCommand = new CommandScope("update");
+            CommandScope updateCommand = new CommandScope("update");
 
-                updateCommand.addArgumentValue("changeLogFile", changeLogPath);
-                updateCommand.addArgumentValue("database", database);
-                updateCommand.addArgumentValue("resourceAccessor", new ClassLoaderResourceAccessor());
-                updateCommand.addArgumentValue("defaultSchemaName", Util.DEFAULT_SCHEMA_NAME);
+            updateCommand.addArgumentValue("changeLogFile", Util.CHANGE_LOG_PATH);
+            updateCommand.addArgumentValue("database", database);
+            updateCommand.addArgumentValue("resourceAccessor", new ClassLoaderResourceAccessor());
+            updateCommand.addArgumentValue("defaultSchemaName", Util.DEFAULT_SCHEMA_NAME);
 
-                updateCommand.execute();
-
-                System.out.println("Миграции Liquibase успешно применены");
-            }
+            updateCommand.execute();
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при выполнении миграций Liquibase.", e);
         }
