@@ -10,9 +10,9 @@ public final class Util {
     public static final String DB_PASSWORD = checkEnvVariable("DB_PASSWORD");
 
     public static final String DB_HOST = checkEnvVariable("DB_HOST");
-    public static final String DB_PORT = System.getenv().getOrDefault("DB_PORT", "5432");
+    public static final int DB_PORT = parseIntEnvVariable("DB_PORT", 5432);
     public static final String REDIS_HOST = checkEnvVariable("REDIS_HOST");
-    public static final String REDIS_PORT = System.getenv().getOrDefault("REDIS_PORT", "6379");
+    public static final int REDIS_PORT = parseIntEnvVariable("REDIS_PORT", 6379);
 
     public static final String DB_NAME = checkEnvVariable("DB_NAME");
     public static final String DEFAULT_SCHEMA_NAME = "world";
@@ -34,7 +34,7 @@ public final class Util {
     public static final int SECOND_CHECK_PAUSE_MILLIS = getPauseMillis();
 
     private static String buildDbUrl(String dbPrefix) {
-        return String.format("%s://%s:%s/%s", dbPrefix, DB_HOST, DB_PORT, DB_NAME);
+        return String.format("%s://%s:%d/%s", dbPrefix, DB_HOST, DB_PORT, DB_NAME);
     }
 
     private static int getPauseMillis() {
