@@ -10,7 +10,9 @@ import com.javarush.util.Util;
 import io.lettuce.core.RedisClient;
 import org.hibernate.SessionFactory;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,6 +32,8 @@ public class Main {
 
             List<Integer> ids = List.of(3, 2545, 123, 4, 189, 89, 3458, 1189, 10, 102);
 
+            Map<Integer, String> benchmarkStats = new LinkedHashMap<>();
+
             for (int i = 0; i < Util.CHECK_QUANTITY; i++) {
                 long startRedis = System.currentTimeMillis();
                 benchmarkService.testRedisPerformance(ids);
@@ -39,11 +43,20 @@ public class Main {
                 benchmarkService.testPostgresPerformance(ids);
                 long stopPostgres = System.currentTimeMillis();
 
-                System.out.printf("%s:\t%d ms%n", "Redis",  (stopRedis - startRedis));
-                System.out.printf("%s:\t%d ms%n", "PostgreSQL",  (stopPostgres - startPostgres));
+                String redisPerformance = String.format("%s:\t%d ms", "Redis",  (stopRedis - startRedis));
+                String postgresPerformance = String.format("%s:\t%d ms", "PostgreSQL",  (stopPostgres - startPostgres));
+
+                System.out.println(redisPerformance);
+                System.out.println(postgresPerformance);
+
+                benchmarkStats.put(i + 1, String.format("%s; %s", redisPerformance, postgresPerformance));
 
                 Thread.sleep(Util.SECOND_CHECK_PAUSE_MILLIS);
             }
+
+            System.out.println("--------------------------------------------");
+            benchmarkStats.forEach((k, v) -> System.out.println(k + ": " + v));
+            System.out.println("--------------------------------------------");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
