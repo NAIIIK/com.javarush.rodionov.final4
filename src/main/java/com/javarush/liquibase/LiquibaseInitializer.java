@@ -16,7 +16,6 @@ public final class LiquibaseInitializer {
 
     public static void runMigrations() {
         try (Connection connection = DriverManager.getConnection(Util.DB_URL, Util.DB_USER, Util.DB_PASSWORD)) {
-
             Database database = DatabaseFactory.getInstance()
                     .findCorrectDatabaseImplementation(new JdbcConnection(connection));
 
