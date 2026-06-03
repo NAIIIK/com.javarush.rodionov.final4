@@ -32,4 +32,6 @@ services:
       - DB_PASSWORD=
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - CHECK_QUANTITY=3
+      - CHECK_PAUSE_SECONDS=3
     restart: on-failure

@@ -6,6 +6,7 @@ import com.javarush.redis.CityCountry;
 
 import com.javarush.service.BenchmarkService;
 import com.javarush.service.DataTransferService;
+import com.javarush.util.Util;
 import io.lettuce.core.RedisClient;
 import org.hibernate.SessionFactory;
 
@@ -29,7 +30,7 @@ public class Main {
 
             List<Integer> ids = List.of(3, 2545, 123, 4, 189, 89, 3458, 1189, 10, 102);
 
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < Util.CHECK_QUANTITY; i++) {
                 long startRedis = System.currentTimeMillis();
                 benchmarkService.testRedisPerformance(ids);
                 long stopRedis = System.currentTimeMillis();
@@ -41,7 +42,7 @@ public class Main {
                 System.out.printf("%s:\t%d ms%n", "Redis",  (stopRedis - startRedis));
                 System.out.printf("%s:\t%d ms%n", "PostgreSQL",  (stopPostgres - startPostgres));
 
-                Thread.sleep(5_000);
+                Thread.sleep(Util.SECOND_CHECK_PAUSE_MILLIS);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
